@@ -34,7 +34,7 @@ export default async function PaymentsPage() {
 
   const totalCollected = payments.reduce((sum, p) => sum + Number(p.amount), 0);
 
-  const serializedBookings = bookings.map((b) => ({
+  const serializedBookings = bookings.map((b: typeof bookings[number]) => ({
     ...b,
     totalAmount: b.totalAmount.toString(),
     paidAmount: b.paidAmount.toString(),

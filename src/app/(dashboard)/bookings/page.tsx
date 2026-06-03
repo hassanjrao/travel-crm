@@ -37,7 +37,7 @@ export default async function BookingsPage() {
     prisma.tour.findMany({ select: { id: true, title: true, pricePerPerson: true }, where: { isActive: true } }),
   ]);
 
-  const serializedTours = tours.map((t) => ({ ...t, pricePerPerson: t.pricePerPerson.toString() }));
+  const serializedTours = tours.map((t: typeof tours[number]) => ({ ...t, pricePerPerson: t.pricePerPerson.toString() }));
 
   return (
     <div className="space-y-6">
