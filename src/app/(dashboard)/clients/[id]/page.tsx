@@ -118,7 +118,7 @@ export default async function ClientDetailPage(props: PageProps<"/clients/[id]">
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {client.bookings.map((b) => (
+                {client.bookings.map((b: typeof client.bookings[number]) => (
                   <tr key={b.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 font-mono text-xs text-gray-600">
                       <Link href={`/bookings/${b.id}`} className="text-blue-600 hover:underline">

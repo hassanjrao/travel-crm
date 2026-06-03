@@ -161,7 +161,7 @@ export default async function BookingDetailPage(props: PageProps<"/bookings/[id]
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {booking.payments.map((p) => (
+                {booking.payments.map((p: typeof booking.payments[number]) => (
                   <tr key={p.id}>
                     <td className="px-4 py-3 text-gray-500">{formatDate(p.paidAt)}</td>
                     <td className="px-4 py-3 font-medium text-green-600">{formatCurrency(p.amount.toString())}</td>

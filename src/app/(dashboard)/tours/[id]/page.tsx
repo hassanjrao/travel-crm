@@ -121,7 +121,7 @@ export default async function TourDetailPage(props: PageProps<"/tours/[id]">) {
             <CardTitle className="text-base">Itinerary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {tour.itineraries.map((day) => (
+            {tour.itineraries.map((day: typeof tour.itineraries[number]) => (
               <div key={day.id} className="flex gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                   <span className="text-sm font-bold text-blue-600">D{day.dayNumber}</span>
@@ -154,7 +154,7 @@ export default async function TourDetailPage(props: PageProps<"/tours/[id]">) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {tour.bookings.map((b) => (
+                {tour.bookings.map((b: typeof tour.bookings[number]) => (
                   <tr key={b.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3">
                       <Link href={`/bookings/${b.id}`} className="font-mono text-xs text-blue-600 hover:underline">
