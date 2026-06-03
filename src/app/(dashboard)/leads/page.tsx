@@ -25,9 +25,9 @@ export default async function LeadsPage() {
 
   const stats = {
     total: leads.length,
-    new: leads.filter((l) => l.status === "NEW").length,
-    converted: leads.filter((l) => l.status === "CONVERTED").length,
-    lost: leads.filter((l) => l.status === "LOST").length,
+    new: leads.filter((l: typeof leads[number]) => l.status === "NEW").length,
+    converted: leads.filter((l: typeof leads[number]) => l.status === "CONVERTED").length,
+    lost: leads.filter((l: typeof leads[number]) => l.status === "LOST").length,
   };
 
   return (

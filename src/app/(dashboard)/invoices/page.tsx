@@ -32,9 +32,9 @@ export default async function InvoicesPage() {
 
   const stats = {
     total: invoices.length,
-    paid: invoices.filter((i) => i.status === "PAID").length,
-    outstanding: invoices.filter((i) => i.status === "SENT").length,
-    overdue: invoices.filter((i) => i.status === "OVERDUE").length,
+    paid: invoices.filter((i: typeof invoices[number]) => i.status === "PAID").length,
+    outstanding: invoices.filter((i: typeof invoices[number]) => i.status === "SENT").length,
+    overdue: invoices.filter((i: typeof invoices[number]) => i.status === "OVERDUE").length,
     totalAmount: invoices.reduce((sum: number, i: typeof invoices[number]) => sum + Number(i.totalAmount), 0),
   };
 
