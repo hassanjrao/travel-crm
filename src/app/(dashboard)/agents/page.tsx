@@ -58,7 +58,7 @@ export default async function AgentsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {agents.map((agent) => (
+                  {agents.map((agent: typeof agents[number]) => (
                     <tr key={agent.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-medium text-gray-900">{agent.name}</td>
                       <td className="px-4 py-3 text-gray-500">
