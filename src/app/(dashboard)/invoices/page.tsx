@@ -35,7 +35,7 @@ export default async function InvoicesPage() {
     paid: invoices.filter((i) => i.status === "PAID").length,
     outstanding: invoices.filter((i) => i.status === "SENT").length,
     overdue: invoices.filter((i) => i.status === "OVERDUE").length,
-    totalAmount: invoices.reduce((sum, i) => sum + Number(i.totalAmount), 0),
+    totalAmount: invoices.reduce((sum: number, i) => sum + Number(i.totalAmount), 0),
   };
 
   return (
