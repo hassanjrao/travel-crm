@@ -99,7 +99,7 @@ export default async function PaymentsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {payments.map((payment) => (
+                  {payments.map((payment: typeof payments[number]) => (
                     <tr key={payment.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 text-gray-500">{formatDate(payment.paidAt)}</td>
                       <td className="px-4 py-3 font-medium text-gray-900">

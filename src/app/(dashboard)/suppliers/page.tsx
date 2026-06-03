@@ -58,7 +58,7 @@ export default async function SuppliersPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {suppliers.map((s) => (
+                  {suppliers.map((s: typeof suppliers[number]) => (
                     <tr key={s.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-medium text-gray-900">{s.name}</td>
                       <td className="px-4 py-3">

@@ -37,8 +37,8 @@ export function RevenueChart({ data }: RevenueChartProps) {
               tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
             />
             <Tooltip
-              formatter={(value: number) =>
-                new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value)
+              formatter={(value) =>
+                new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value))
               }
             />
             <Area

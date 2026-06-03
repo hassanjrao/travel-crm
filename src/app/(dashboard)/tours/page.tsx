@@ -45,7 +45,7 @@ export default async function ToursPage() {
             <p>No tours yet. Add your first tour package.</p>
           </div>
         ) : (
-          tours.map((tour) => (
+          tours.map((tour: typeof tours[number]) => (
             <Card key={tour.id} className="flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">

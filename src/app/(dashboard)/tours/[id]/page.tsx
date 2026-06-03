@@ -89,7 +89,7 @@ export default async function TourDetailPage(props: PageProps<"/tours/[id]">) {
                 <div>
                   <p className="text-xs font-semibold text-green-600 uppercase mb-1">Included</p>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    {tour.includes.map((item, i) => (
+                    {tour.includes.map((item: string, i: number) => (
                       <li key={i} className="flex items-center gap-2">
                         <span className="text-green-500">✓</span> {item}
                       </li>
@@ -101,7 +101,7 @@ export default async function TourDetailPage(props: PageProps<"/tours/[id]">) {
                 <div>
                   <p className="text-xs font-semibold text-red-500 uppercase mb-1">Excluded</p>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    {tour.excludes.map((item, i) => (
+                    {tour.excludes.map((item: string, i: number) => (
                       <li key={i} className="flex items-center gap-2">
                         <span className="text-red-400">✗</span> {item}
                       </li>

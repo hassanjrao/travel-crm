@@ -88,7 +88,7 @@ export default async function LeadsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {leads.map((lead) => (
+                  {leads.map((lead: typeof leads[number]) => (
                     <tr key={lead.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-medium text-gray-900">
                         {lead.firstName} {lead.lastName}

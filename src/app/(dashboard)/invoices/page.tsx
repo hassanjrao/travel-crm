@@ -94,7 +94,7 @@ export default async function InvoicesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {invoices.map((inv) => (
+                  {invoices.map((inv: typeof invoices[number]) => (
                     <tr key={inv.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-mono text-xs font-medium text-blue-600">{inv.invoiceNo}</td>
                       <td className="px-4 py-3 font-medium text-gray-900">

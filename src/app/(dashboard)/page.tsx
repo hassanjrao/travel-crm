@@ -170,7 +170,7 @@ export default async function DashboardPage() {
                 {stats.recentBookings.length === 0 ? (
                   <p className="text-sm text-gray-500 text-center py-4">No bookings yet</p>
                 ) : (
-                  stats.recentBookings.map((booking) => (
+                  stats.recentBookings.map((booking: typeof stats.recentBookings[number]) => (
                     <div
                       key={booking.id}
                       className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
@@ -218,7 +218,7 @@ export default async function DashboardPage() {
             {stats.topTours.length === 0 ? (
               <p className="text-sm text-gray-500 text-center py-4">No tours yet</p>
             ) : (
-              stats.topTours.map((tour) => (
+              stats.topTours.map((tour: typeof stats.topTours[number]) => (
                 <div
                   key={tour.id}
                   className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
@@ -236,7 +236,7 @@ export default async function DashboardPage() {
                     <p className="text-sm font-semibold text-gray-900">
                       {tour._count.bookings} bookings
                     </p>
-                    <p className="text-xs text-gray-500">{formatCurrency(tour.pricePerPerson)}/person</p>
+                    <p className="text-xs text-gray-500">{formatCurrency(tour.pricePerPerson.toString())}/person</p>
                   </div>
                 </div>
               ))

@@ -79,7 +79,7 @@ export default async function BookingsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {bookings.map((b) => (
+                  {bookings.map((b: typeof bookings[number]) => (
                     <tr key={b.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-mono text-xs text-gray-600">{b.bookingRef}</td>
                       <td className="px-4 py-3 font-medium text-gray-900">

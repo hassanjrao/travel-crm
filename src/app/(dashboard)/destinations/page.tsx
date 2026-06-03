@@ -33,7 +33,7 @@ export default async function DestinationsPage() {
             <p>No destinations yet.</p>
           </div>
         ) : (
-          destinations.map((dest) => (
+          destinations.map((dest: typeof destinations[number]) => (
             <Card key={dest.id} className="hover:shadow-md transition-shadow">
               <CardContent className="pt-5">
                 <div className="flex items-start justify-between">
