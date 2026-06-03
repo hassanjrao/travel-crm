@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  AGENT
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  CONVERTED
+  LOST
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  REFUNDED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum SupplierType {
+  HOTEL
+  TRANSPORT
+  AIRLINE
+  ACTIVITY
+  RESTAURANT
+  OTHER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          UserRole  @default(AGENT)
+  phone         String?
+  avatar        String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  leads         Lead[]
+  bookings      Booking[]
+  notes         Note[]
+}
+
+model Destination {
+  id          String   @id @default(cuid())
+  name        String
+  country     String
+  description String?
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tours       Tour[]
+}
+
+model Tour {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  description   String?
+  duration      Int
+  maxGroupSize  Int      @default(15)
+  pricePerPerson Decimal @db.Decimal(10, 2)
+  isActive      Boolean  @default(true)
+  imageUrl      String?
+  highlights    String[]
+  includes      String[]
+  excludes      String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  destinationId String
+  destination   Destination @relation(fields: [destinationId], references: [id])
+
+  itineraries   Itinerary[]
+  bookings      Booking[]
+}
+
+model Itinerary {
+  id          String   @id @default(cuid())
+  dayNumber   Int
+  title       String
+  description String?
+  activities  String[]
+  meals       String[]
+  createdAt   DateTime @default(now())
+
+  tourId      String
+  tour        Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+
+  @@unique([tourId, dayNumber])
+}
+
+model Lead {
+  id          String     @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  source      String?
+  status      LeadStatus @default(NEW)
+  notes       String?
+  budget      Decimal?   @db.Decimal(10, 2)
+  travelDate  DateTime?
+  destination String?
+  groupSize   Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id])
+
+  notesList    Note[]
+}
+
+model Client {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String   @unique
+  phone       String?
+  address     String?
+  city        String?
+  country     String?
+  passport    String?
+  dateOfBirth DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookings    Booking[]
+  invoices    Invoice[]
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  bookingRef    String        @unique
+  status        BookingStatus @default(PENDING)
+  travelDate    DateTime
+  returnDate    DateTime?
+  groupSize     Int           @default(1)
+  totalAmount   Decimal       @db.Decimal(10, 2)
+  paidAmount    Decimal       @db.Decimal(10, 2) @default(0)
+  paymentStatus PaymentStatus @default(UNPAID)
+  specialRequests String?
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [id])
+
+  tourId        String
+  tour          Tour          @relation(fields: [tourId], references: [id])
+
+  agentId       String?
+  agent         User?         @relation(fields: [agentId], references: [id])
+
+  invoice       Invoice?
+  payments      Payment[]
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  invoiceNo   String        @unique
+  status      InvoiceStatus @default(DRAFT)
+  issueDate   DateTime      @default(now())
+  dueDate     DateTime
+  subtotal    Decimal       @db.Decimal(10, 2)
+  taxRate     Decimal       @db.Decimal(5, 2) @default(0)
+  taxAmount   Decimal       @db.Decimal(10, 2) @default(0)
+  totalAmount Decimal       @db.Decimal(10, 2)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  bookingId   String        @unique
+  booking     Booking       @relation(fields: [bookingId], references: [id])
+
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+
+  payments    Payment[]
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  amount        Decimal  @db.Decimal(10, 2)
+  method        String
+  reference     String?
+  paidAt        DateTime @default(now())
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  bookingId     String
+  booking       Booking  @relation(fields: [bookingId], references: [id])
+
+  invoiceId     String?
+  invoice       Invoice? @relation(fields: [invoiceId], references: [id])
+}
+
+model Supplier {
+  id          String       @id @default(cuid())
+  name        String
+  type        SupplierType
+  email       String?
+  phone       String?
+  address     String?
+  country     String?
+  contactPerson String?
+  notes       String?
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
