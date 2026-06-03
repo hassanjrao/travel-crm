@@ -31,7 +31,7 @@ export default async function ClientDetailPage(props: PageProps<"/clients/[id]">
 
   if (!client) notFound();
 
-  const totalSpent = client.bookings.reduce((sum: number, b) => sum + Number(b.paidAmount), 0);
+  const totalSpent = client.bookings.reduce((sum: number, b: typeof client.bookings[number]) => sum + Number(b.paidAmount), 0);
 
   return (
     <div className="space-y-6 max-w-4xl">

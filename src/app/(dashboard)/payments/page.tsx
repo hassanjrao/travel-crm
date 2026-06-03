@@ -32,7 +32,7 @@ export default async function PaymentsPage() {
     }),
   ]);
 
-  const totalCollected = payments.reduce((sum: number, p) => sum + Number(p.amount), 0);
+  const totalCollected = payments.reduce((sum: number, p: typeof payments[number]) => sum + Number(p.amount), 0);
 
   const serializedBookings = bookings.map((b: typeof bookings[number]) => ({
     ...b,

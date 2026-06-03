@@ -44,7 +44,7 @@ export function BookingStatusChart({ data }: BookingStatusChartProps) {
                 paddingAngle={3}
                 dataKey="value"
               >
-                {chartData.map((entry) => (
+                {chartData.map((entry: typeof chartData[number]) => (
                   <Cell
                     key={entry.status}
                     fill={COLORS[entry.status] ?? "#94a3b8"}
