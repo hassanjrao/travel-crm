@@ -8,6 +8,7 @@ import {
   LayoutDashboard, Users, UserCheck, CalendarCheck, Map,
   Globe, Building2, FileText, CreditCard, Settings,
   Plane, TrendingUp, Menu, X, LogOut, Bell, User,
+  ChevronLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,22 +27,58 @@ const navItems = [
   { label: "Settings", href: "/settings", icon: Settings },
 ];
 
-function SidebarContent({ onClose }: { onClose?: () => void }) {
+function SidebarContent({
+  collapsed,
+  onClose,
+  onCollapse,
+  isDesktop,
+}: {
+  collapsed: boolean;
+  onClose?: () => void;
+  onCollapse?: () => void;
+  isDesktop?: boolean;
+}) {
   const pathname = usePathname();
+
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-white">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-700">
-        <div className="flex items-center gap-2">
-          <Plane className="h-6 w-6 text-blue-400" />
-          <span className="text-lg font-bold tracking-tight">TravelCRM</span>
-        </div>
-        {onClose && (
-          <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-white p-1">
+    <div className="flex flex-col h-full bg-gray-900 text-white overflow-hidden">
+      {/* Logo + collapse button */}
+      <div className="flex items-center justify-between px-4 py-5 border-b border-gray-700 flex-shrink-0">
+        {!collapsed && (
+          <div className="flex items-center gap-2 min-w-0">
+            <Plane className="h-6 w-6 text-blue-400 flex-shrink-0" />
+            <span className="text-lg font-bold tracking-tight truncate">TravelCRM</span>
+          </div>
+        )}
+        {collapsed && (
+          <div className="mx-auto">
+            <Plane className="h-6 w-6 text-blue-400" />
+          </div>
+        )}
+
+        {/* Desktop collapse toggle */}
+        {isDesktop && onCollapse && (
+          <button
+            onClick={onCollapse}
+            className={cn(
+              "text-gray-400 hover:text-white p-1 rounded transition-colors flex-shrink-0",
+              collapsed && "mx-auto"
+            )}
+          >
+            <ChevronLeft className={cn("h-4 w-4 transition-transform duration-200", collapsed && "rotate-180")} />
+          </button>
+        )}
+
+        {/* Mobile close button */}
+        {!isDesktop && onClose && (
+          <button onClick={onClose} className="text-gray-400 hover:text-white p-1">
             <X className="h-5 w-5" />
           </button>
         )}
       </div>
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+
+      {/* Nav items */}
+      <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
         {navItems.map(({ label, href, icon: Icon }) => {
           const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
           return (
@@ -49,22 +86,27 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
               key={href}
               href={href}
               onClick={onClose}
+              title={collapsed ? label : undefined}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg text-sm font-medium transition-colors",
+                collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5",
                 active
                   ? "bg-blue-600 text-white"
                   : "text-gray-400 hover:bg-gray-800 hover:text-white"
               )}
             >
               <Icon className="h-4 w-4 flex-shrink-0" />
-              {label}
+              {!collapsed && <span>{label}</span>}
             </Link>
           );
         })}
       </nav>
-      <div className="px-3 py-4 border-t border-gray-700">
-        <p className="px-3 text-xs text-gray-500">v1.0.0</p>
-      </div>
+
+      {!collapsed && (
+        <div className="px-4 py-4 border-t border-gray-700 flex-shrink-0">
+          <p className="text-xs text-gray-500">v1.0.0</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -77,12 +119,22 @@ interface LayoutShellProps {
 
 export function LayoutShell({ children, userName, userRole }: LayoutShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
 
   return (
     <div className="flex h-full">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:min-h-screen flex-shrink-0">
-        <SidebarContent />
+      <aside
+        className={cn(
+          "hidden lg:flex lg:flex-col flex-shrink-0 transition-all duration-300",
+          desktopCollapsed ? "lg:w-16" : "lg:w-64"
+        )}
+      >
+        <SidebarContent
+          collapsed={desktopCollapsed}
+          onCollapse={() => setDesktopCollapsed((v) => !v)}
+          isDesktop
+        />
       </aside>
 
       {/* Mobile overlay */}
@@ -100,7 +152,10 @@ export function LayoutShell({ children, userName, userRole }: LayoutShellProps) 
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <SidebarContent onClose={() => setMobileOpen(false)} />
+        <SidebarContent
+          collapsed={false}
+          onClose={() => setMobileOpen(false)}
+        />
       </aside>
 
       {/* Main content */}
@@ -108,21 +163,32 @@ export function LayoutShell({ children, userName, userRole }: LayoutShellProps) 
         {/* Header */}
         <header className="flex items-center justify-between px-4 sm:px-6 py-4 bg-white border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center gap-3">
+            {/* Mobile hamburger */}
             <button
-              className="lg:hidden p-1.5 rounded-md text-gray-500 hover:bg-gray-100"
+              className="lg:hidden p-1.5 rounded-md text-gray-500 hover:bg-gray-100 transition-colors"
               onClick={() => setMobileOpen(true)}
             >
               <Menu className="h-5 w-5" />
             </button>
+
+            {/* Desktop sidebar toggle (shown when sidebar is collapsed) */}
+            {desktopCollapsed && (
+              <button
+                className="hidden lg:flex p-1.5 rounded-md text-gray-500 hover:bg-gray-100 transition-colors"
+                onClick={() => setDesktopCollapsed(false)}
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            )}
+
             <div className="flex items-center gap-2 lg:hidden">
               <Plane className="h-5 w-5 text-blue-600" />
               <span className="font-bold text-gray-900">TravelCRM</span>
             </div>
-            <span className="hidden lg:block text-xl font-semibold text-gray-900">TravelCRM</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon">
               <Bell className="h-4 w-4" />
             </Button>
             <div className="hidden sm:flex items-center gap-2">
