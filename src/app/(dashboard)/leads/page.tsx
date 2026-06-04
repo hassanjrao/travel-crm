@@ -32,7 +32,7 @@ export default async function LeadsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Leads</h2>
           <p className="text-sm text-gray-500 mt-1">Manage and track potential customers</p>

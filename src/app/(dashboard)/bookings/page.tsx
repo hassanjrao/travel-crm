@@ -41,7 +41,7 @@ export default async function BookingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Bookings</h2>
           <p className="text-sm text-gray-500 mt-1">Track all tour bookings</p>

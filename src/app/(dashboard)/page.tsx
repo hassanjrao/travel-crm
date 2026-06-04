@@ -128,7 +128,7 @@ export default async function DashboardPage() {
         {kpis.map(({ title, value, icon: Icon, color, bg }) => (
           <Card key={title}>
             <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-medium text-gray-500">{title}</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
@@ -158,7 +158,7 @@ export default async function DashboardPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <CardTitle className="text-base">Recent Bookings</CardTitle>
                 <Link href="/bookings" className="text-sm text-blue-600 hover:underline">
                   View all
@@ -206,7 +206,7 @@ export default async function DashboardPage() {
       {/* Top Tours */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <CardTitle className="text-base">Top Tours by Bookings</CardTitle>
             <Link href="/tours" className="text-sm text-blue-600 hover:underline">
               Manage tours
